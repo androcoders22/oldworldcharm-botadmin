@@ -50,7 +50,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     if (cleanEmail === ADMIN_EMAIL && cleanPass === ADMIN_PASSWORD) {
       const adminUser: User = {
-        email: 'Admin@oldworldcharm.in',
+        email: 'admin@oldworldcharm.in',
         name: 'Administrator',
         role: 'Super Admin',
       };

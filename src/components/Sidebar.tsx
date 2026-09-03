@@ -113,7 +113,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                 </div>
                 <p className="text-[10px] text-slate-400 truncate">
-                  {user?.email || 'Admin@oldworldcharm.in'}
+                  {user?.email || 'admin@oldworldcharm.in'}
                 </p>
               </div>
             </div>

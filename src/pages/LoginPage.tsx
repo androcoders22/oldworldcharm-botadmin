@@ -103,7 +103,7 @@ export const LoginPage: React.FC = () => {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Admin@oldworldcharm.in"
+                  placeholder="Enter your email"
                   autoComplete="username"
                   autoFocus
                   required
@@ -129,7 +129,7 @@ export const LoginPage: React.FC = () => {
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
+                  placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
                   autoComplete="current-password"
                   required
                   className="w-full pl-10 pr-11 py-2.5 text-sm rounded-xl bg-slate-950/60 border border-slate-750 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all"

@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Toaster, toast } from 'sonner';
 import { Layout } from './components/Layout';
 import { LeadsDashboard } from './pages/LeadsDashboard';
+import { LoginPage } from './pages/LoginPage';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { LeadsService, MOCK_LEADS } from './services/api';
 import { Lead } from './types/lead';
-import { toast } from 'sonner';
 
-export const App: React.FC = () => {
+const DashboardContent: React.FC = () => {
+  const { isAuthenticated } = useAuth();
+
   // Leads State
   const [leads, setLeads] = useState<Lead[]>([]);
   const [isLeadsLoading, setIsLeadsLoading] = useState<boolean>(true);
@@ -19,6 +23,7 @@ export const App: React.FC = () => {
 
   // Fetch Leads
   const fetchLeads = useCallback(async (isSilent = false) => {
+    if (!isAuthenticated) return;
     if (!isSilent) setIsLeadsLoading(true);
     setLeadsError(null);
 
@@ -42,7 +47,7 @@ export const App: React.FC = () => {
     } finally {
       setIsLeadsLoading(false);
     }
-  }, [isDemoMode]);
+  }, [isDemoMode, isAuthenticated]);
 
   // Refresh
   const handleRefresh = async () => {
@@ -64,17 +69,25 @@ export const App: React.FC = () => {
 
   // Initial Data Fetch
   useEffect(() => {
-    fetchLeads();
-  }, [fetchLeads]);
+    if (isAuthenticated) {
+      fetchLeads();
+    }
+  }, [fetchLeads, isAuthenticated]);
 
   // Periodic background synchronization (every 15s)
   useEffect(() => {
+    if (!isAuthenticated) return;
+
     const interval = setInterval(() => {
       fetchLeads(true);
     }, 15000);
 
     return () => clearInterval(interval);
-  }, [fetchLeads]);
+  }, [fetchLeads, isAuthenticated]);
+
+  if (!isAuthenticated) {
+    return <LoginPage />;
+  }
 
   return (
     <Layout
@@ -92,6 +105,27 @@ export const App: React.FC = () => {
         setIsDemoMode={setIsDemoMode}
       />
     </Layout>
+  );
+};
+
+export const App: React.FC = () => {
+  return (
+    <AuthProvider>
+      <Toaster 
+        theme="dark" 
+        position="top-right" 
+        richColors 
+        closeButton 
+        toastOptions={{
+          style: {
+            background: '#1e293b',
+            borderColor: '#334155',
+            color: '#f8fafc',
+          },
+        }}
+      />
+      <DashboardContent />
+    </AuthProvider>
   );
 };
 

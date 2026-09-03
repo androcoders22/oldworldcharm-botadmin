@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { 
   Menu, 
   RefreshCw, 
-  Clock
+  Clock,
+  LogOut
 } from 'lucide-react';
+import { toast } from 'sonner';
+import { useAuth } from '../context/AuthContext';
 
 interface NavbarProps {
   onToggleSidebar: () => void;
@@ -16,6 +19,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onRefresh,
   isRefreshing,
 }) => {
+  const { logout } = useAuth();
   const [currentTime, setCurrentTime] = useState<string>('');
 
   useEffect(() => {
@@ -36,6 +40,13 @@ export const Navbar: React.FC<NavbarProps> = ({
     const timer = setInterval(updateTime, 1000);
     return () => clearInterval(timer);
   }, []);
+
+  const handleLogout = () => {
+    logout();
+    toast.info('Signed Out', {
+      description: 'You have been logged out of the admin portal.',
+    });
+  };
 
   return (
     <header className="sticky top-0 z-30 h-20 bg-slate-900/80 backdrop-blur-md border-b border-slate-800/80 px-4 sm:px-6 lg:px-8 flex items-center justify-between transition-all">
@@ -64,7 +75,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
-      {/* Right side: Clock and Refresh Button */}
+      {/* Right side: Clock, Refresh Button, and Sign Out */}
       <div className="flex items-center gap-2 sm:gap-3">
         {/* IST Clock */}
         <div className="hidden xl:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800/60 border border-slate-750 text-slate-300 text-xs font-medium">
@@ -81,6 +92,16 @@ export const Navbar: React.FC<NavbarProps> = ({
         >
           <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />
           <span className="hidden sm:inline">Refresh</span>
+        </button>
+
+        {/* Quick Sign Out Button */}
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-rose-300 hover:text-rose-200 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 active:scale-95 transition-all cursor-pointer"
+          title="Sign out of Admin Portal"
+        >
+          <LogOut className="w-3.5 h-3.5" />
+          <span className="hidden sm:inline">Sign Out</span>
         </button>
       </div>
     </header>

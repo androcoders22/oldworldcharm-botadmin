@@ -2,8 +2,12 @@ import React from 'react';
 import { 
   Users, 
   Building2,
-  X
+  X,
+  LogOut,
+  ShieldCheck
 } from 'lucide-react';
+import { toast } from 'sonner';
+import { useAuth } from '../context/AuthContext';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -18,6 +22,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
   leadCount = 0,
   isBackendConnected = true,
 }) => {
+  const { user, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    toast.info('Signed Out', {
+      description: 'You have been logged out of the admin portal.',
+    });
+  };
 
   return (
     <>
@@ -84,6 +96,36 @@ export const Sidebar: React.FC<SidebarProps> = ({
               </span>
             )}
           </div>
+        </div>
+
+        {/* User Profile & Logout Section */}
+        <div className="p-3 border-t border-slate-800/80 bg-slate-900/60">
+          <div className="p-2.5 rounded-xl bg-slate-850/80 border border-slate-750/70 mb-2">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-brand-600/20 border border-brand-500/30 flex items-center justify-center text-brand-400 font-bold text-xs">
+                OW
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-1">
+                  <span className="text-xs font-semibold text-white truncate">
+                    {user?.name || 'Administrator'}
+                  </span>
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                </div>
+                <p className="text-[10px] text-slate-400 truncate">
+                  {user?.email || 'Admin@oldworldcharm.in'}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-rose-300 hover:text-rose-200 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 transition-all cursor-pointer"
+          >
+            <LogOut className="w-3.5 h-3.5" />
+            <span>Sign Out</span>
+          </button>
         </div>
 
         {/* Footer Status Bar */}

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Toaster } from 'sonner';
 import { Sidebar } from './Sidebar';
 import { Navbar } from './Navbar';
 
@@ -22,21 +21,6 @@ export const Layout: React.FC<LayoutProps> = ({
 
   return (
     <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col antialiased">
-      {/* Sonner Toast Notification Center */}
-      <Toaster 
-        theme="dark" 
-        position="top-right" 
-        richColors 
-        closeButton 
-        toastOptions={{
-          style: {
-            background: '#1e293b',
-            borderColor: '#334155',
-            color: '#f8fafc',
-          },
-        }}
-      />
-
       {/* Sidebar Navigation */}
       <Sidebar
         isOpen={sidebarOpen}
